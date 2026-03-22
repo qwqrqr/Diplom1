@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>DLP-система v3 • Защита коммерческой тайны</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app-container">
+
+<h2>DLP-система: контроль коммерческой тайны</h2>
+
+<!-- LOGIN -->
+<div id="loginDiv" class="card">
+  <h3>🔑 Вход в систему</h3>
+  <input type="text" id="username" placeholder="Логин">
+  <input type="password" id="password" placeholder="Пароль">
+  <button onclick="login()">Войти</button>
+  <p>🔹 Админ: admin / admin &nbsp;&nbsp; 🔹 Рабочий: worker / worker</p>
+</div>
+
+<!-- MAIN -->
+<div id="mainDiv" style="display:none;">
+
+  <div class="top-bar">
+    <div class="user-greeting">
+      Вы вошли как <span id="userRole"></span> <b id="userName"></b>
+    </div>
+    <button class="secondary-btn" onclick="logout()">🚪 Выйти</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card input-card">
+    <textarea id="text" placeholder="Введите текст отчёта..."></textarea>
+
+    <div class="button-group">
+      <button class="primary-btn" onclick="checkData()">🔍 Проверить</button>
+      <button class="secondary-btn" onclick="encryptBacon()">🔒 Бэкон</button>
+      <button class="secondary-btn" onclick="decryptBacon()">🔓 Дешифр</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card">
+    <h3 id="result" class="result-badge allow">Результат</h3>
+    <div id="highlight"></div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="card">
+    <h3>Журнал</h3>
+    <button onclick="clearLog()">Очистить</button>
+
+    <table class="log-table">
+      <tbody id="log"></tbody>
+    </table>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminPanel" class="card">
+    <h3>🛠 Админ панель</h3>
+
+    <input id="ruleName" placeholder="Название правила">
+    <input id="ruleRegex" placeholder="Regex">
+    <select id="ruleAction">
+      <option value="block">block</option>
+      <option value="warning">warning</option>
+    </select>
+
+    <button onclick="addRule()">Добавить правило</button>
+
+    <div id="ruleList" class="rule-list"></div>
+  </div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
+</div>
+
+</body>
+</html>
