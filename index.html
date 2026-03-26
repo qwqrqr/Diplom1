@@ -1,85 +1,78 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>DLP-система v3 • Защита коммерческой тайны</title>
-
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>DLP System v3</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <div class="app-container">
+    <h2>DLP + Firebase 🛡️</h2>
 
-<h2>DLP-система: контроль коммерческой тайны</h2>
-
-<!-- LOGIN -->
-<div id="loginDiv" class="card">
-  <h3>🔑 Вход в систему</h3>
-  <input type="text" id="username" placeholder="Логин">
-  <input type="password" id="password" placeholder="Пароль">
-  <button onclick="login()">Войти</button>
-  <p>🔹 Админ: admin / admin &nbsp;&nbsp; 🔹 Рабочий: worker / worker</p>
-</div>
-
-<!-- MAIN -->
-<div id="mainDiv" style="display:none;">
-
-  <div class="top-bar">
-    <div class="user-greeting">
-      Вы вошли как <span id="userRole"></span> <b id="userName"></b>
+    <div id="loginDiv" class="card">
+        <h3>Вход в систему</h3>
+        <input id="username" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Пароль">
+        <button onclick="login()" style="width:100%; background:#1e3a8a; color:white;">Войти</button>
     </div>
-    <button class="secondary-btn" onclick="logout()">🚪 Выйти</button>
-  </div>
 
-  <!-- INPUT -->
-  <div class="card input-card">
-    <textarea id="text" placeholder="Введите текст отчёта..."></textarea>
+    <div id="mainDiv" style="display:none;">
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>Пользователь: <b id="userNameDisplay"></b> (<span id="userRoleDisplay"></span>)</div>
+            <button onclick="logout()">Выйти</button>
+        </div>
 
-    <div class="button-group">
-      <button class="primary-btn" onclick="checkData()">🔍 Проверить</button>
-      <button class="secondary-btn" onclick="encryptBacon()">🔒 Бэкон</button>
-      <button class="secondary-btn" onclick="decryptBacon()">🔓 Дешифр</button>
-    </div>
-  </div>
+        <div id="adminPanel" class="card" style="display:none; border:2px solid #3b82f6; background:#f0f7ff;">
+            <h4>👤 Регистрация сотрудника</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                <input id="regFio" placeholder="ФИО">
+                <input id="regEmail" type="email" placeholder="Email">
+                <input id="regPass" type="password" placeholder="Пароль">
+                <select id="regRole" style="padding:10px; border-radius:10px;">
+                    <option value="worker">Рабочий</option>
+                    <option value="admin">Администратор</option>
+                </select>
+                <button onclick="registerEmployee()" style="background:#2563eb; color:white; grid-column: span 2;">Создать аккаунт</button>
+            </div>
+            <hr style="margin:20px 0;">
 
-  <!-- RESULT -->
-  <div class="card">
-    <h3 id="result" class="result-badge allow">Результат</h3>
-    <div id="highlight"></div>
-  </div>
+<h4>📌 Управление правилами</h4>
 
-  <!-- LOGS -->
-  <div class="card">
-    <h3>Журнал</h3>
-    <button onclick="clearLog()">Очистить</button>
-
-    <table class="log-table">
-      <tbody id="log"></tbody>
-    </table>
-  </div>
-
-  <!-- ADMIN -->
-  <div id="adminPanel" class="card">
-    <h3>🛠 Админ панель</h3>
-
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
     <input id="ruleName" placeholder="Название правила">
-    <input id="ruleRegex" placeholder="Regex">
+    <input id="ruleRegex" placeholder="regex (например: секрет|пароль)">
+    
     <select id="ruleAction">
-      <option value="block">block</option>
-      <option value="warning">warning</option>
+        <option value="block">🚫 block</option>
+        <option value="warning">⚠ warning</option>
     </select>
 
-    <button onclick="addRule()">Добавить правило</button>
-
-    <div id="ruleList" class="rule-list"></div>
-  </div>
-
+    <button onclick="addRule()" style="background:#2563eb; color:white;">➕ Добавить</button>
 </div>
 
+<div id="ruleList" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+        </div>
+
+        <div class="card">
+            <textarea id="text" placeholder="Введите текст для анализа..."></textarea>
+            <button onclick="checkData()">Проверить</button>
+            <button onclick="encryptBacon()">Зашифровать (Bacon)</button>
+            <button onclick="decryptBacon()">Расшифровать</button>
+            <h3 id="resultDisplay"></h3>
+            <div id="highlight"></div>
+        </div>
+
+        <div class="card">
+            <h3>📜 Журнал событий</h3>
+            <table>
+                <thead>
+                    <tr><th>Время</th><th>Кто</th><th>Статус</th><th>Текст</th></tr>
+                </thead>
+                <tbody id="logTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <script type="module" src="app.js"></script>
-
-</div>
-
 </body>
 </html>

@@ -1,18 +1,67 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// Firebase v10 (modular)
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// AUTH
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// FIRESTORE
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  onSnapshot,   // 🔥 добавили
+  deleteDoc     // 🔥 добавили
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// CONFIG
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: "AIzaSyBaMMUFTobk6_18Ah3Zxt6zgNJuUdONZME",
+  authDomain: "diplom-318d6.firebaseapp.com",
+  projectId: "diplom-318d6",
+  storageBucket: "diplom-318d6.firebasestorage.app",
+  messagingSenderId: "130852231774",
+  appId: "1:130852231774:web:d98943c8f7d2057ff0f2cf",
+  measurementId: "G-EFWBE5KTGX"
 };
 
+// INIT
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+// EXPORT
+export {
+  auth,
+  db,
+
+  // auth
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+
+  // firestore
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  onSnapshot,  // 🔥 экспорт
+  deleteDoc    // 🔥 экспорт
+};
