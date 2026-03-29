@@ -1,23 +1,27 @@
- import { 
+import { 
     auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut,
     doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy,
     onSnapshot, deleteDoc
 } from "./firebase.js";
 
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 let currentUserData = null;
 let rules = [];
 
-// --- ВХОД ---
-window.login = async function() {
-    const email = username.value;
-    const pass = password.value;
+// элементы
+const loader = document.getElementById("loader");
+const loginDiv = document.getElementById("loginDiv");
+const mainDiv = document.getElementById("mainDiv");
 
-    try {
-        const cred = await signInWithEmailAndPassword(auth, email, pass);
-        const userSnap = await getDoc(doc(db, "users", cred.user.uid));
+// ===================== AUTH STATE =====================
+onAuthStateChanged(auth, async (user) => {
+
+    if (user) {
+        const userSnap = await getDoc(doc(db, "users", user.uid));
 
         if (userSnap.exists()) {
-            currentUserData = { uid: cred.user.uid, ...userSnap.data() };
+            currentUserData = { uid: user.uid, ...userSnap.data() };
 
             loginDiv.style.display = "none";
             mainDiv.style.display = "block";
@@ -29,14 +33,30 @@ window.login = async function() {
                 (currentUserData.role === "admin") ? "block" : "none";
 
             loadLogs();
-            loadRules(); // 🔥 ВАЖНО
+            loadRules();
         }
+    } else {
+        loginDiv.style.display = "block";
+        mainDiv.style.display = "none";
+    }
+
+    // 🔥 убираем loader ПОСЛЕ проверки
+    loader.style.display = "none";
+});
+
+// ===================== LOGIN =====================
+window.login = async function() {
+    const email = username.value;
+    const pass = password.value;
+
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
     } catch (e) {
         alert("Ошибка входа: " + e.message);
     }
 };
 
-// --- РЕГИСТРАЦИЯ ---
+// ===================== REGISTER =====================
 window.registerEmployee = async function() {
     try {
         const res = await createUserWithEmailAndPassword(auth, regEmail.value, regPass.value);
@@ -58,15 +78,12 @@ window.registerEmployee = async function() {
     }
 };
 
-// --- LOGOUT ---
+// ===================== LOGOUT =====================
 window.logout = async () => {
     await signOut(auth);
-    location.reload();
 };
 
 // ===================== RULES =====================
-
-// 🔴 LIVE загрузка
 function loadRules() {
     const rulesRef = collection(db, "rules");
 
@@ -96,7 +113,6 @@ function loadRules() {
     });
 }
 
-// ➕ добавить правило
 window.addRule = async function() {
     const name = ruleName.value;
     const regex = ruleRegex.value;
@@ -121,15 +137,12 @@ window.addRule = async function() {
     ruleRegex.value = "";
 };
 
-// ❌ удалить правило
 window.deleteRule = async function(id) {
     if (!confirm("Удалить правило?")) return;
-
     await deleteDoc(doc(db, "rules", id));
 };
 
 // ===================== DLP =====================
-
 window.checkData = async function() {
     let txt = text.value;
     let status = "allow";
@@ -137,8 +150,8 @@ window.checkData = async function() {
 
     rules.forEach(r => {
         out = out.replace(r.regex, m => {
-            if(r.action === "block") status = "block";
-            else if(r.action === "warning" && status !== "block") status = "warning";
+            if (r.action === "block") status = "block";
+            else if (r.action === "warning" && status !== "block") status = "warning";
             return `<span class="${r.class}">${m}</span>`;
         });
     });
@@ -158,7 +171,6 @@ window.checkData = async function() {
 };
 
 // ===================== LOGS =====================
-
 async function loadLogs() {
     let q;
 
@@ -186,26 +198,34 @@ async function loadLogs() {
 }
 
 // ===================== BACON =====================
-
 const alphabet = [..."abcdefghijklmnopqrstuvwxyz", ..."абвгдеёжзийклмнопрстуфхцчшщъыьэюя", ..."әіңғүұқөһ"];
 const map = {};
-alphabet.forEach((c,i)=>{ map[c]=i.toString(2).padStart(6,"0").replace(/0/g,"A").replace(/1/g,"B"); });
+alphabet.forEach((c,i) => {
+    map[c] = i.toString(2).padStart(6,"0").replace(/0/g,"A").replace(/1/g,"B");
+});
 const rev = {};
-Object.entries(map).forEach(([k,v])=>rev[v]=k);
+Object.entries(map).forEach(([k,v]) => rev[v] = k);
 
+// 🔹 Шифрование
 window.encryptBacon = function(){
-    let t = text.value.toLowerCase();
+    const textEl = document.getElementById("text");
+    let t = textEl.value.toLowerCase();
     let r = "";
     for(let c of t) r += map[c] ? map[c]+" " : c;
-    text.value = r.trim();
+    textEl.value = r.trim();
 };
 
+// 🔹 Дешифрование
 window.decryptBacon = function(){
-    let t = text.value.toUpperCase().replace(/[^AB]/g,"");
-    let b="", r="";
+    const textEl = document.getElementById("text");
+    let t = textEl.value.toUpperCase().replace(/[^AB]/g,"");
+    let b = "", r = "";
     for(let c of t){
-        b+=c;
-        if(b.length===6){ r+=rev[b]||"?"; b=""; }
+        b += c;
+        if(b.length === 6){
+            r += rev[b] || "?";
+            b = "";
+        }
     }
-    text.value = r;
+    textEl.value = r;
 };

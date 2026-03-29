@@ -6,73 +6,114 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div class="app-container">
     <h2>DLP + Firebase 🛡️</h2>
 
-    <div id="loginDiv" class="card">
+    <!-- 🔥 LOADER -->
+    <div id="loader" class="card" style="text-align:center;">
+        ⏳ Загрузка...
+    </div>
+
+    <!-- 🔐 LOGIN -->
+    <div id="loginDiv" class="card" style="display:none;">
         <h3>Вход в систему</h3>
         <input id="username" type="email" placeholder="Email">
         <input id="password" type="password" placeholder="Пароль">
-        <button onclick="login()" style="width:100%; background:#1e3a8a; color:white;">Войти</button>
+        <button onclick="login()" style="width:100%; background:#1e3a8a; color:white;">
+            Войти
+        </button>
     </div>
 
+    <!-- ✅ MAIN -->
     <div id="mainDiv" style="display:none;">
+
+        <!-- USER PANEL -->
         <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-            <div>Пользователь: <b id="userNameDisplay"></b> (<span id="userRoleDisplay"></span>)</div>
+            <div>
+                Пользователь: 
+                <b id="userNameDisplay"></b> 
+                (<span id="userRoleDisplay"></span>)
+            </div>
             <button onclick="logout()">Выйти</button>
         </div>
 
+        <!-- ADMIN PANEL -->
         <div id="adminPanel" class="card" style="display:none; border:2px solid #3b82f6; background:#f0f7ff;">
+            
             <h4>👤 Регистрация сотрудника</h4>
+
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
                 <input id="regFio" placeholder="ФИО">
                 <input id="regEmail" type="email" placeholder="Email">
                 <input id="regPass" type="password" placeholder="Пароль">
+
                 <select id="regRole" style="padding:10px; border-radius:10px;">
                     <option value="worker">Рабочий</option>
                     <option value="admin">Администратор</option>
                 </select>
-                <button onclick="registerEmployee()" style="background:#2563eb; color:white; grid-column: span 2;">Создать аккаунт</button>
+
+                <button onclick="registerEmployee()" style="background:#2563eb; color:white; grid-column: span 2;">
+                    Создать аккаунт
+                </button>
             </div>
+
             <hr style="margin:20px 0;">
 
-<h4>📌 Управление правилами</h4>
+            <!-- RULES -->
+            <h4>📌 Управление правилами</h4>
 
-<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-    <input id="ruleName" placeholder="Название правила">
-    <input id="ruleRegex" placeholder="regex (например: секрет|пароль)">
-    
-    <select id="ruleAction">
-        <option value="block">🚫 block</option>
-        <option value="warning">⚠ warning</option>
-    </select>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                <input id="ruleName" placeholder="Название правила">
+                <input id="ruleRegex" placeholder="regex (например: секрет|пароль)">
 
-    <button onclick="addRule()" style="background:#2563eb; color:white;">➕ Добавить</button>
-</div>
+                <select id="ruleAction">
+                    <option value="block">🚫 block</option>
+                    <option value="warning">⚠ warning</option>
+                </select>
 
-<div id="ruleList" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+                <button onclick="addRule()" style="background:#2563eb; color:white;">
+                    ➕ Добавить
+                </button>
+            </div>
+
+            <div id="ruleList" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:10px;"></div>
         </div>
 
+        <!-- TEXT CHECK -->
         <div class="card">
             <textarea id="text" placeholder="Введите текст для анализа..."></textarea>
+
             <button onclick="checkData()">Проверить</button>
             <button onclick="encryptBacon()">Зашифровать (Bacon)</button>
             <button onclick="decryptBacon()">Расшифровать</button>
+
             <h3 id="resultDisplay"></h3>
             <div id="highlight"></div>
         </div>
 
+        <!-- LOGS -->
         <div class="card">
             <h3>📜 Журнал событий</h3>
+
             <table>
                 <thead>
-                    <tr><th>Время</th><th>Кто</th><th>Статус</th><th>Текст</th></tr>
+                    <tr>
+                        <th>Время</th>
+                        <th>Кто</th>
+                        <th>Статус</th>
+                        <th>Текст</th>
+                    </tr>
                 </thead>
                 <tbody id="logTableBody"></tbody>
             </table>
         </div>
+
     </div>
 </div>
+
+<!-- 🔥 ВАЖНО: module -->
 <script type="module" src="app.js"></script>
+
 </body>
 </html>
