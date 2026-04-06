@@ -1,66 +1,91 @@
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
 }
 
 body {
-  background: #f0f2f5;
+  background: linear-gradient(135deg, #e0f2fe, #dbeafe); /* светло-голубой градиент */
   padding: 24px;
   display: flex;
   justify-content: center;
+  min-height: 100vh; /* чтобы фон занимал всю высоту */
 }
 
+/* ===== CONTAINER ===== */
 .app-container {
   width: 100%;
   max-width: 1200px;
 }
 
+/* ===== HEADINGS ===== */
 h2 {
   margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
 }
 
 /* ===== CARD ===== */
 .card {
-  background: white;
+  background: #ffffff;
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
 }
 
 /* ===== INPUT ===== */
-textarea {
+textarea,
+input,
+select {
   width: 100%;
-  min-height: 120px;
-  padding: 12px;
+  padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid #ddd;
   margin-bottom: 10px;
-  resize: vertical;
+  background: #f9fafb;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+textarea:focus,
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+  background: #ffffff;
 }
 
 /* ===== BUTTONS ===== */
 button {
-  padding: 10px 16px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #2563eb); /* синий градиент */
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
   margin-right: 6px;
   margin-top: 6px;
 }
 
 button:hover {
-  opacity: 0.85;
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 /* ===== LOGIN ===== */
@@ -74,6 +99,7 @@ button:hover {
 #result {
   margin-top: 10px;
   font-weight: bold;
+  color: #111827;
 }
 
 /* ===== LOG TABLE ===== */
@@ -81,12 +107,21 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
 }
 
 th, td {
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
+  padding: 12px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #f3f4f6;
+  font-weight: 600;
 }
 
 /* ===== STATUS ===== */
@@ -95,6 +130,7 @@ th, td {
   border-radius: 20px;
   color: white;
   font-size: 12px;
+  font-weight: 600;
 }
 
 .status-allow {
@@ -112,43 +148,48 @@ th, td {
 /* ===== HIGHLIGHT ===== */
 #highlight {
   margin-top: 10px;
-  padding: 10px;
+  padding: 12px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #eee;
   white-space: pre-wrap;
+  font-family: 'Fira Code', monospace;
 }
 
 /* ===== HIGHLIGHTS ===== */
 .danger {
-  background: #fecaca;
-  padding: 2px 4px;
-  border-radius: 4px;
+  background: #fee2e2;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 .warningMark {
-  background: #fde68a;
-  padding: 2px 4px;
-  border-radius: 4px;
+  background: #fef3c7;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 .commercial {
-  background: #fef3c7;
-  padding: 2px 4px;
-  border-radius: 4px;
+  background: #fef9c3;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
+
+/* ===== RULE CHIP ===== */
 .rule-chip {
   background: #f1f5f9;
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   border: 1px solid #cbd5e1;
+  font-size: 14px;
 }
 
 .rule-name {
   font-weight: 600;
+  color: #111827;
 }
 
 .rule-action {
@@ -164,4 +205,9 @@ th, td {
   cursor: pointer;
   font-size: 14px;
   color: #ef4444;
+  transition: color 0.2s ease;
+}
+
+.rule-chip button:hover {
+  color: #b91c1c;
 }
